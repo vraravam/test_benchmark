@@ -47,7 +47,6 @@ class Test::Unit::UI::Console::TestRunner
   def finished(elapsed_time)
     nl
     output("Finished in #{elapsed_time} seconds.")
-    set_terminal_title("Finished in #{elapsed_time} seconds.")
     output(@result)
     output_benchmarks
     output_benchmarks(:suite)
@@ -59,7 +58,6 @@ class Test::Unit::UI::Console::TestRunner
   def test_started(name)
     test_started_old(name)
     @test_benchmarks[name] = Time.now
-    set_terminal_title(name)
   end
   
   alias test_finished_old test_finished
@@ -81,10 +79,6 @@ class Test::Unit::UI::Console::TestRunner
   @@sort_by_time = lambda { |a,b| b[1] <=> a[1] }
 
 private
-  def set_terminal_title(string)
-    system "echo", "\033]0;#{string}\007\\c"
-  end
-
   def full_output?
     ENV['BENCHMARK'] == 'full'
   end
